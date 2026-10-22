@@ -3,7 +3,7 @@ backend/marketplace.db
 *.db
 
 # Virtual Environment
-backend/venv/
+backend/vv/
 venv/
 ENV/
 
