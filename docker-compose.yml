@@ -1,0 +1,13 @@
+
+
+services:
+  web:
+    build: .
+    container_name: asoee_marketplace_app
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - PYTHONUNBUFFERED=1
