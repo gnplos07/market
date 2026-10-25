@@ -4,6 +4,7 @@ from database import engine, Base, get_db
 import models
 import schemas
 from hashing import Hash
+from token import create_access_token
 
 # Δημιουργία των πινάκων στη βάση (αν δεν υπάρχουν)
 Base.metadata.create_all(bind=engine)
@@ -32,3 +33,28 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user) # Ανανέωση για να πάρει το ID που του έδωσε η βάση
 
     return new_user
+
+@app.post("/login")
+def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    
+    # 1. Ψάχνουμε στη βάση αν υπάρχει χρήστης με αυτό το username
+    user = db.query(models.User).filter(models.User.username == request.username).first()
+    
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Invalid credentials (User not found)"
+        )
+    
+    # 2. Ελέγχουμε αν ο κωδικός ταιριάζει με το hash της βάσης
+    if not Hash.verify(request.password, user.password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Incorrect password"
+        )
+    
+    # 3. Αν όλα είναι σωστά, δημιουργούμε το JWT Token
+    access_token = create_access_token(data={"sub": user.email})
+    
+    # 4. Επιστρέφουμε το token πίσω στον client
+    return {"access_token": access_token, "token_type": "bearer"}

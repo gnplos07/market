@@ -11,3 +11,4 @@ services:
       - ./backend:/app
     environment:
       - PYTHONUNBUFFERED=1
+      - SECRET_KEY=edo_vazeis_ena_pragmatika_mystiko_kai_megalo_kleidi_123!
