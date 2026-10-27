@@ -68,3 +68,24 @@ def get_current_user_profile(current_user: str = Depends(get_current_user)):
         "current_user_email": current_user 
 
     }
+
+@app.post("/books",response_model= schemas.BookResponse)
+def create_book(
+    book: schemas.BookCreate,
+    db: Session = Depends(get_db),
+    current_user : str = Depends(get_current_user)
+):
+    user = db.query(models.User).filter(models.User.email == current_user).first()
+
+    new_book = models.Book(
+        title=book.title,
+        price=book.price,
+        description=book.description,
+        state=book.state,
+        owner_id=user.id)
+
+    db.add(new_book)
+    db.commit()
+    db.refresh(new_book)
+    
+    return new_book

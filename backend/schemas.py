@@ -13,3 +13,20 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class BookCreate(BaseModel):
+    title: str
+    price: float
+    description: str
+    state : str
+
+class BookResponse(BaseModel):
+    id: int
+    title: str
+    price: float
+    description: str
+    state : str
+    owner_email : str
+
+    class Config:
+        from_attributes = True
