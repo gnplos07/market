@@ -5,6 +5,7 @@ import models
 import schemas
 from hashing import Hash
 from token import create_access_token
+from oauth2 import get_current_user
 
 # Δημιουργία των πινάκων στη βάση (αν δεν υπάρχουν)
 Base.metadata.create_all(bind=engine)
@@ -58,3 +59,12 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
     
     # 4. Επιστρέφουμε το token πίσω στον client
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@app.get("/users/me")
+def get_current_user_profile(current_user: str = Depends(get_current_user)):
+    return { 
+        "message": " Access approved ",
+        "current_user_email": current_user 
+
+    }
