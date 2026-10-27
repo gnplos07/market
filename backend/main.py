@@ -6,6 +6,7 @@ import schemas
 from hashing import Hash
 from token import create_access_token
 from oauth2 import get_current_user
+from typing import List
 
 # Δημιουργία των πινάκων στη βάση (αν δεν υπάρχουν)
 Base.metadata.create_all(bind=engine)
@@ -89,3 +90,9 @@ def create_book(
     db.refresh(new_book)
     
     return new_book
+
+@app.get("/books", response_model=list[schemas.BookResponse])
+def get_books(db: Session = Depends(get_db)):
+    # Ζητάμε από τη βάση όλα τα βιβλία
+    books = db.query(models.Book).all()
+    return books
