@@ -96,3 +96,16 @@ def get_books(db: Session = Depends(get_db)):
     # Ζητάμε από τη βάση όλα τα βιβλία
     books = db.query(models.Book).all()
     return books
+
+
+@app.get("/books/{id}", response_model = schemas.BookResponse)
+def get_book_id(id:int, db: Session = Depends(get_db)):
+
+    book = db.query(models.Book).filter(models.Book.id==id).first()
+
+    if not book:
+        raise HTTPException(
+            status_code = status.HTTP_404_NOT_FOUND,
+            detail = f"Book with ID {id} not found"
+        )
+    return book
