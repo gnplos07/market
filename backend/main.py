@@ -114,22 +114,22 @@ def get_book_id(id:int, db: Session = Depends(get_db)):
 def delete_book(
     id: int,
     db: Session = Depends(get_db),
-    current_user: str = Depends(get_current_user)):
-
+    current_user: str = Depends(get_current_user)
+):
     user = db.query(models.User).filter(models.User.email == current_user).first()
-
     book = db.query(models.Book).filter(models.Book.id == id).first()
 
     if not book:
         raise HTTPException(
-            status_code = status.HTTP_404_NOT_FOUND,
-            detail = f"The book with ID {id} not found"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"The book with ID {id} not found"
         )
 
     if book.owner_id != user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="You can't delete this book")
+            detail="You can't delete this book"
+        )
 
     db.delete(book)
     db.commit()
