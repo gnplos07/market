@@ -1,14 +1,35 @@
-
+version: '3.8'
 
 services:
-  web:
-    build: .
-    container_name: asoee_marketplace_app
-    restart: always
+  db:
+    image: postgres:15-alpine
+    container_name: marketplace_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: books_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: marketplace_backend
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend:/app
     environment:
-      - PYTHONUNBUFFERED=1
-      - SECRET_KEY=edo_vazeis_ena_pragmatika_mystiko_kai_megalo_kleidi_123!
+      - DATABASE_URL=postgresql://postgres:secretpassword@db/books_db
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: marketplace_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

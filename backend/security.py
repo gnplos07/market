@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import os
-from jose import jtw
+from jose import jwt
 
 SECRET_KEY = os.getenv("SECRET_KEY", "super_secret_key_fallback")
 ALGORITHM = "HS256"

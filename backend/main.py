@@ -4,9 +4,10 @@ from database import engine, Base, get_db
 import models
 import schemas
 from hashing import Hash
-from token import create_access_token
+from security import create_access_token
 from oauth2 import get_current_user
 from typing import List
+from fastapi.security import OAuth2PasswordRequestForm
 
 # Δημιουργία των πινάκων στη βάση (αν δεν υπάρχουν)
 Base.metadata.create_all(bind=engine)
