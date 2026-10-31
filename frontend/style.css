@@ -1,57 +1,70 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
+:root {
+    --paper: #f8f4ed;
+    --surface: #fffdf9;
+    --ink: #35271f;
+    --muted: #79695c;
+    --accent: #795039;
+    --accent-hover: #603d2a;
+    --line: #e3d8cb;
 }
-
-header {
-    background: #4f46e5;
-    color: white;
-    padding: 1.5rem 2rem;
-    text-align: center;
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; }
+a { color: var(--accent); text-underline-offset: 4px; }
+header { min-height: 92px; padding: 20px max(24px, calc((100vw - 1200px) / 2)); display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); background: var(--surface); }
+header h1 { display: flex; align-items: center; gap: 12px; margin: 0; font-family: Georgia, serif; font-size: 23px; font-weight: normal; }
+.brand-mark { display: grid; place-items: center; width: 42px; height: 46px; background: var(--accent); color: white; border-radius: 7px 14px 14px 7px; font-size: 28px; }
+nav { display: flex; align-items: center; gap: 24px; }
+nav a { text-decoration: none; font-size: 14px; font-weight: 600; }
+nav a:hover { text-decoration: underline; }
+main { max-width: 1248px; margin: auto; padding: 0 24px 64px; }
+.hero { position: relative; overflow: hidden; padding: 64px 48px; margin: 32px 0 48px; border: 1px solid var(--line); border-radius: 24px; background: #eee2d2; }
+.hero::after { content: 'B.'; position: absolute; right: 6%; top: -50px; font: italic 360px Georgia, serif; color: #79503912; pointer-events: none; }
+.eyebrow { margin: 0 0 12px; color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 2px; }
+h2 { margin: 0 0 12px; font: normal 30px/1.2 Georgia, serif; color: var(--ink); }
+.hero h2 { position: relative; z-index: 1; font-size: clamp(40px, 5.5vw, 70px); letter-spacing: -2px; }
+.hero > p:not(.eyebrow) { max-width: 430px; color: #665243; margin: 20px 0 28px; }
+.button-link, button { display: inline-flex; align-items: center; justify-content: center; gap: 20px; background: var(--accent); color: white; border: 1px solid transparent; border-radius: 8px; padding: 12px 20px; min-height: 46px; font: 600 14px 'Segoe UI', sans-serif; text-decoration: none; cursor: pointer; transition: background .18s; }
+button:hover, .button-link:hover { background: var(--accent-hover); }
+.market-layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 40px; align-items: start; }
+#books-section { grid-column: 1; grid-row: 1; min-width: 0; }
+#add-book-section { grid-column: 2; grid-row: 1; border: 1px solid var(--line); border-radius: 16px; padding: 26px; background: var(--surface); }
+#add-book-section h2 { font-size: 26px; }
+.section-description { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
+form { display: grid; gap: 10px; }
+label { font-size: 13px; font-weight: 600; }
+input, textarea { width: 100%; min-width: 0; border: 1px solid #cdbfaf; border-radius: 8px; background: #fffefa; color: var(--ink); font: inherit; font-size: 15px; padding: 12px; margin-bottom: 10px; }
+textarea { resize: vertical; min-height: 110px; }
+input::placeholder, textarea::placeholder { color: #8b7c6e; }
+:focus-visible { outline: 3px solid #a57a53; outline-offset: 3px; }
+#books-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr)); gap: 20px; }
+.book-card { position: relative; overflow: hidden; background: var(--surface); border: 1px solid var(--line); padding: 26px; border-radius: 14px; }
+.book-card::before { content: ''; display: block; height: 7px; width: 44px; background: #bb926a; border-radius: 3px; margin-bottom: 24px; }
+.book-card h3 { font: normal 24px/1.3 Georgia, serif; margin: 0 0 12px; overflow-wrap: anywhere; }
+.book-card p { color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+.price { border-top: 1px solid var(--line); padding-top: 18px; margin-top: 24px; font-size: 22px; font-weight: 650; color: var(--accent); }
+#books-container > p { padding: 28px; border: 1px dashed #cdbfaf; border-radius: 12px; color: var(--muted); }
+.auth-container { max-width: 480px; background: var(--surface); padding: 40px; margin: 64px auto; border: 1px solid var(--line); border-radius: 20px; }
+.auth-container h2 { font-size: 40px; }
+.form-group { display: grid; gap: 8px; }
+.auth-container > p:last-child { color: var(--muted); font-size: 13px; margin-top: 24px; }
+footer { max-width: 1200px; margin: auto; padding: 24px 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 20px; color: var(--muted); font-size: 13px; }
+@media (max-width: 800px) {
+    .market-layout { grid-template-columns: 1fr; gap: 32px; }
+    #books-section, #add-book-section { grid-column: 1; grid-row: auto; }
+    #books-section { grid-row: 1; }
+    #add-book-section { grid-row: 2; }
+    .hero { padding: 36px 26px; margin: 24px 0 32px; }
+    footer { margin: 0 24px; }
 }
-
-main {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+@media (max-width: 480px) {
+    header { padding: 16px; flex-wrap: wrap; gap: 12px; }
+    header h1 { font-size: 21px; }
+    nav { width: 100%; justify-content: flex-end; gap: 20px; }
+    main { padding: 0 16px 40px; }
+    .hero h2 { letter-spacing: -1px; }
+    .hero::after { right: -50px; }
+    .auth-container { margin: 24px 16px; padding: 28px 22px; }
+    footer { flex-direction: column; gap: 4px; }
 }
-
-h2 {
-    color: #4f46e5;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 0.5rem;
-}
-
-#books-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-}
-
-.book-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-}
-
-.book-card:hover {
-    transform: translateY(-3px);
-}
-
-.book-card h3 {
-    margin-top: 0;
-    color: #1f2937;
-}
-
-.price {
-    font-weight: bold;
-    color: #16a34a;
-    font-size: 1.2rem;
-    margin-top: 1rem;
-}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } button, .button-link { transition: none; } }

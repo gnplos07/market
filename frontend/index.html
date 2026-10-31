@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="el">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +8,59 @@
 </head>
 <body>
     <header>
-        <h1>📚 Book Marketplace</h1>
+        <h1><span class="brand-mark" aria-hidden="true">B.</span> Book Marketplace</h1>
+        <nav>
+            <a href="index.html" aria-current="page">Browse books</a>
+            <a href="login.html" id="login-link">Login</a>
+            <button id="logout-btn" onclick="logout()" style="display:none;">Logout</button>
+        </nav>
     </header>
 
     <main>
-        <h2>Διαθέσιμα Βιβλία</h2>
-        <!-- Εδώ θα έρχονται δυναμικά τα βιβλία από τη JavaScript -->
-        <div id="books-container">
-            <p>Φόρτωση βιβλίων...</p>
+        <section class="hero" aria-labelledby="hero-title">
+            <p class="eyebrow">A NEW CHAPTER STARTS HERE</p>
+            <h2 id="hero-title">Good books.<br>New beginnings.</h2>
+            <p>A place to discover your next read and give your books a new home.</p>
+            <a class="button-link" href="#books-section">Explore the collection <span aria-hidden="true">↗</span></a>
+        </section>
+        <div class="market-layout">
+        <!-- Section: Add New Book -->
+        <section id="add-book-section">
+            <p class="eyebrow">PASS THE STORY ON</p><h2>Add a new book</h2><p class="section-description">Give your next reader something to look forward to.</p>
+            <form id="add-book-form">
+                <label for="book-title">Book title</label><input type="text" id="book-title" placeholder="Book Title" required>
+                <label for="book-description">Description</label><textarea rows="4" id="book-description" placeholder="Book Description" required></textarea>
+                <label for="book-price">Price (€)</label><input type="number" id="book-price" placeholder="Price (€)" step="0.01" required>
+                <button type="submit">Add Book</button>
+            </form>
+        </section>
+
+        <!-- Section: Available Books -->
+        <section id="books-section">
+            <p class="eyebrow">THE BOOKSHELF</p><h2>Available books</h2><p class="section-description">Find a story worth taking home.</p>
+            <div id="books-container">
+                <!-- Books will be loaded here dynamically via JavaScript -->
+            </div>
+        </section>
         </div>
     </main>
+    <footer>Book Marketplace <span>Every book deserves another chapter.</span></footer>
 
     <script src="app.js"></script>
+    <script>
+        // Helper script to handle Login link / Logout button visibility based on token
+        const token = localStorage.getItem("token");
+        if (token) {
+            document.getElementById("login-link").style.display = "none";
+            document.getElementById("logout-btn").style.display = "inline-block";
+        }
+
+        // Function to clear session and log out the user
+        function logout() {
+            localStorage.removeItem("token");
+            alert("Logged out successfully!");
+            window.location.reload();
+        }
+    </script>
 </body>
 </html>
