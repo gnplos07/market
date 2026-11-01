@@ -4,7 +4,7 @@ from jose import jwt
 
 SECRET_KEY = os.getenv("SECRET_KEY", "super_secret_key_fallback")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRES_TIME = 30 
+ACCESS_TOKEN_EXPIRES_MINUTES = 30 
 
 def create_access_token(data:dict):
     to_encode = data.copy()

@@ -22,12 +22,12 @@ def read_root():
 @app.post("/register", response_model=schemas.UserResponse, status_code=status.HTTP_201_CREATED)
 def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
-    hashed_password = Hash.encrypt(request.password)
+    hashed_password = Hash.encrypt(user.password)
 
     new_user = models.User(
-        username = request.username,
-        email = request.email,
-        password = hashed_password  
+        username = user.username,
+        email = user.email,
+        hashed_password = hashed_password  
     )
     
     # 5. Προσθήκη στη βάση και αποθήκευση (Commit)
@@ -50,7 +50,7 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
         )
     
     # 2. Ελέγχουμε αν ο κωδικός ταιριάζει με το hash της βάσης
-    if not Hash.verify(request.password, user.password):
+    if not Hash.verify(request.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Incorrect password"
