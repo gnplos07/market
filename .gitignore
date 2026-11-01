@@ -1,6 +1,6 @@
 # SQLite Database
 backend/marketplace.db
-*.db
+
 
 # Virtual Environment
 backend/venv/
@@ -13,3 +13,8 @@ __pycache__/
 .pytest_cache/
 .vscode/
 .idea/
+
+/data/
+*.db
+*.db-wal
+*.db-shm
