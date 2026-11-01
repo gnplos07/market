@@ -88,6 +88,7 @@ async function handleAddBook(event) {
     const title = document.getElementById("book-title").value;
     const description = document.getElementById("book-description").value;
     const price = parseFloat(document.getElementById("book-price").value);
+    const state = document.getElementById("book-state").value;
 
     try {
         const response = await fetch(`${API_URL}/books`, {
@@ -96,7 +97,7 @@ async function handleAddBook(event) {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}` // Send token for authentication
             },
-            body: JSON.stringify({ title, description, price })
+           body: JSON.stringify({ title, description, price, state })
         });
 
         if (response.ok) {

@@ -26,7 +26,7 @@ class BookResponse(BaseModel):
     price: float
     description: str
     state : str
-    owner_email : str
+    owner_id : int
 
     class Config:
         from_attributes = True

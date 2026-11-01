@@ -8,11 +8,19 @@ from security import create_access_token
 from oauth2 import get_current_user
 from typing import List
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.middleware.cors import CORSMiddleware
 
 # Δημιουργία των πινάκων στη βάση (αν δεν υπάρχουν)
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="ASOEE Marketplace API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Authorization", "Content-Type"],
+)
 
 @app.get("/")
 def read_root():
@@ -151,7 +159,7 @@ def update_book(
     if not book:
         raise HTTPException(
             status_code = status.HTTP_404_NOT_FOUND,
-            detail = f"The book with ID {id}not found"
+            detail = f"The book with ID {id} not found"
         )
     if book.owner_id != user.id:
         raise HTTPException(
@@ -159,7 +167,8 @@ def update_book(
             detail = "You can't update a book owned by another user"
         )
     book.title = book_update.title
-    book.desctription = book_update.description
+    book.description = book_update.description
+    book.state = book_update.state
     book.price = book_update.price
 
     db.commit()
