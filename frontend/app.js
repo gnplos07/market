@@ -63,7 +63,7 @@ async function handleLogin(event) {
             const data = await response.json();
             // Save JWT token in browser storage
             localStorage.setItem("token", data.access_token);
-            alert("Login successful! 🎉");
+            alert("Login successful!");
             window.location.href = "index.html"; // Return to home page
         } else {
             alert("Invalid username or password.");
@@ -71,6 +71,41 @@ async function handleLogin(event) {
     } catch (error) {
         console.error("Login Error:", error);
         alert("An error occurred during login.");
+    }
+}
+
+async function handleRegister(event){
+    event.preventDefault();
+    
+    const registerUsername = document.getElementById("registerUsername").value;
+    const registerEmail = document.getElementById("registerEmail").value;
+    const registerPassword = document.getElementById("registerPassword").value;
+
+    const formData = new URLSearchParams();
+    formData.append("username", registerUsername);
+    formData.append("email", registerEmail);
+    formData.append("password", registerPassword);
+
+    try{
+        const response = await fetch (`${API_URL}/register`, {
+            method: "POST",
+            body: formData,
+            headers: {
+                "Content-Type" : "application/x-www-form-urlencoded"
+            }
+    });
+
+    if(response.ok){
+        alert("Registration successful! Please log in.");
+        window.location.href = "login.html";}
+    else{
+        alert("Registration failed. Please try again.");
+
+    }
+}
+    catch (error){
+        console.error("Registration Error:", error);
+        alert("An error occurred during registration.");
     }
 }
 
@@ -101,7 +136,7 @@ async function handleAddBook(event) {
         });
 
         if (response.ok) {
-            alert("Book added successfully! 📚");
+            alert("Book added successfully! ");
             document.getElementById("add-book-form").reset();
             fetchBooks(); // Refresh book list
         } else {
