@@ -74,38 +74,47 @@ async function handleLogin(event) {
     }
 }
 
-async function handleRegister(event){
+async function handleRegister(event) {
     event.preventDefault();
-    
-    const registerUsername = document.getElementById("registerUsername").value;
-    const registerEmail = document.getElementById("registerEmail").value;
-    const registerPassword = document.getElementById("registerPassword").value;
 
-    const formData = new URLSearchParams();
-    formData.append("username", registerUsername);
-    formData.append("email", registerEmail);
-    formData.append("password", registerPassword);
+    const username = document.getElementById("register-username").value.trim();
+    const email = document.getElementById("register-email").value.trim();
+    const password = document.getElementById("register-password").value;
 
-    try{
-        const response = await fetch (`${API_URL}/register`, {
+    const submitButton = event.currentTarget.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+
+    try {
+        const response = await fetch(`${API_URL}/register`, {
             method: "POST",
-            body: formData,
             headers: {
-                "Content-Type" : "application/x-www-form-urlencoded"
-            }
-    });
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ username, email, password })
+        });
 
-    if(response.ok){
-        alert("Registration successful! Please log in.");
-        window.location.href = "login.html";}
-    else{
-        alert("Registration failed. Please try again.");
+        if (response.status === 201) {
+            alert("Account created! You can now log in.");
+            window.location.href = "login.html";
+            return;
+        }
 
-    }
-}
-    catch (error){
-        console.error("Registration Error:", error);
-        alert("An error occurred during registration.");
+        const data = await response.json().catch(() => null);
+
+        if (response.status >= 500) {
+            alert("Server error. Please try again later.");
+        } else if (typeof data?.detail === "string") {
+            alert(data.detail);
+        } else if (Array.isArray(data?.detail)) {
+            alert(data.detail.map(error => error.msg).join("\n"));
+        } else {
+            alert("Registration failed. Please check your details.");
+        }
+    } catch (error) {
+        console.error("Registration error:", error);
+        alert("Could not connect to the server.");
+    } finally {
+        submitButton.disabled = false;
     }
 }
 
@@ -161,4 +170,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (addBookForm) {
         addBookForm.addEventListener("submit", handleAddBook);
     }
-});
+
+
+    const registerForm = document.getElementById("register-form");
+
+    if (registerForm) {
+        registerForm.addEventListener("submit", handleRegister);
+    
+    }});
