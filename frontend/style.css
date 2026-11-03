@@ -68,3 +68,7 @@ footer { max-width: 1200px; margin: auto; padding: 24px 0; border-top: 1px solid
     footer { flex-direction: column; gap: 4px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } button, .button-link { transition: none; } }
+
+[hidden] {
+    display: none !important;
+}

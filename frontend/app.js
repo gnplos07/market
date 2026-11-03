@@ -176,5 +176,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (registerForm) {
         registerForm.addEventListener("submit", handleRegister);
+
+    const showRegisterButton = document.getElementById("show-register");
+const showLoginButton = document.getElementById("show-login");
+
+if (loginForm && registerForm && showRegisterButton && showLoginButton) {
+    const registerPrompt = document.getElementById("show-register-prompt");
+    const loginPrompt = document.getElementById("show-login-prompt");
+
+    function switchForm(showRegister) {
+        loginForm.hidden = showRegister;
+        registerForm.hidden = !showRegister;
+        registerPrompt.hidden = showRegister;
+        loginPrompt.hidden = !showRegister;
+
+        const firstInput = showRegister
+            ? registerForm.querySelector("input")
+            : loginForm.querySelector("input");
+
+        firstInput.focus();
+    }
+
+    showRegisterButton.addEventListener("click", () => switchForm(true));
+    showLoginButton.addEventListener("click", () => switchForm(false));
+}
     
     }});
