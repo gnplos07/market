@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login-Book Marketplace</title>
+    <title>Account - Book Marketplace</title>
     <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
@@ -15,8 +15,10 @@
     </header>
 
     <main class="auth-container">
-        <p class="eyebrow">YOUR NEXT CHAPTER</p><h2>Welcome back.</h2><p class="section-description">Sign in to share your books with their next reader.</p>
+        <p class="eyebrow">BOOK MARKETPLACE</p>
         <form id="login-form">
+            <h2>Sign in</h2>
+            <p class="section-description">Enter your username and password.</p>
             <div class="form-group">
                 <label for="login-username">Username:</label>
                 <input type="text" id="login-username" autocomplete="username" required>
@@ -27,15 +29,17 @@
                 <input type="password" id="login-password" autocomplete="current-password" required>
             </div>
             
-            <button type="submit">Login</button>
+            <button type="submit">Sign in</button>
         </form>
         <p id="show-register-prompt">
-            Don't have an account?
+            New here?
             <button type="button" id="show-register">Create account</button>
         </p>
        
 
-        <form id = "register-form" hidden>
+        <form id="register-form" hidden>
+            <h2>Create account</h2>
+            <p class="section-description">Fill in your details to join.</p>
             <div class="form-group">
                 <label for="register-username"> Username:</label> 
                 <input type = "text" id = "register-username" autocomplete="username" required>
@@ -51,7 +55,7 @@
             </div>
            
 
-            <button type = "submit"> Register</button>
+            <button type = "submit">Create account</button>
         </form>
         <p id="show-login-prompt" hidden>
             Already have an account?
