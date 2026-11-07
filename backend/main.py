@@ -9,6 +9,9 @@ from oauth2 import get_current_user
 from typing import List
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
+import joblib
+import pandas as pd
 
 # Δημιουργία των πινάκων στη βάση (αν δεν υπάρχουν)
 Base.metadata.create_all(bind=engine)
@@ -21,6 +24,9 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["Authorization", "Content-Type"],
 )
+
+model_path = Path(__file__).with_name("book_price_model.joblib")
+price_model = joblib.load(model_path)
 
 @app.get("/")
 def read_root():
@@ -174,3 +180,10 @@ def update_book(
     db.commit()
     db.refresh(book)
     return book 
+
+@app.post("/books/estimate-price")
+def estimate_book_price(data: schemas.BookPriceEstimateRequest):
+    book = pd.DataFrame([data.model_dump()])
+    predicted_price = float(price_model.predict(book)[0])
+
+    return {"estimated_price": round(max(0.0, predicted_price), 2)}

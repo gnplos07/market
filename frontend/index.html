@@ -37,7 +37,18 @@
                     <option value="new">New</option>
                     <option value="like_new">Like new</option>
                     <option value="used">Used</option>
+                    <option value="good">Good</option>
+                    <option value="acceptable">Acceptable</option>
+                    <option value="poor">Poor</option>
                 </select>
+                <label for="book-original-price">Original price (€)</label>
+                <input id="book-original-price" type="number" min="0.01" step="0.01">
+
+                <label for="book-years">Age in years</label>
+                <input id="book-years" type="number" min="0" step="1">
+
+                <button type="button" id="estimate-price-btn">Estimate price</button>
+                <output id="estimated-price" aria-live="polite"></output>
                 
                 <button type="submit">Add Book</button>
             </form>

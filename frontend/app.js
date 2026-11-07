@@ -155,6 +155,48 @@ async function handleAddBook(event) {
         console.error("Add Book Error:", error);
     }
 }
+async function estimateBookPrice(event) {
+    const button = event.currentTarget;
+    const output = document.getElementById("estimated-price");
+    const originalPrice = document.getElementById("book-original-price").valueAsNumber;
+    const years = document.getElementById("book-years").valueAsNumber;
+    const condition = document.getElementById("book-state").value;
+
+    if (!Number.isFinite(originalPrice) || originalPrice <= 0 ||
+        !Number.isInteger(years) || years < 0) {
+        output.textContent = "Enter a positive original price and an age in whole years.";
+        return;
+    }
+
+    if (!["like_new", "good", "acceptable", "poor"].includes(condition)) {
+        output.textContent = "Choose Like new, Good, Acceptable, or Poor for an estimate.";
+        return;
+    }
+
+    button.disabled = true;
+    output.textContent = "Estimating…";
+
+    try {
+        const response = await fetch(`${API_URL}/books/estimate-price`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ original_price: originalPrice, years, condition })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Estimate failed (${response.status})`);
+        }
+
+        const { estimated_price } = await response.json();
+        output.textContent = `Suggested price: €${estimated_price.toFixed(2)}`;
+    } catch {
+        output.textContent = "Could not estimate the price. Please try again.";
+    } finally {
+        button.disabled = false;
+    }
+}
+
+
 
 // Automatic execution based on the page the user is currently on
 document.addEventListener("DOMContentLoaded", () => {
@@ -200,5 +242,12 @@ if (loginForm && registerForm && showRegisterButton && showLoginButton) {
     showRegisterButton.addEventListener("click", () => switchForm(true));
     showLoginButton.addEventListener("click", () => switchForm(false));
 }
+const estimateButton = document.getElementById("estimate-price-btn");
+
+if (estimateButton) {
+    estimateButton.addEventListener("click", estimateBookPrice);
+}
+
+
     
     }});

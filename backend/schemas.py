@@ -1,4 +1,7 @@
 from pydantic import BaseModel, EmailStr
+from typing import Literal
+from pydantic import Field
+
 
 class UserCreate(BaseModel):
     username: str
@@ -30,3 +33,8 @@ class BookResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class BookPriceEstimateRequest(BaseModel):
+    original_price: float = Field(gt=0, allow_inf_nan=False)
+    years: int = Field(ge=0)
+    condition: Literal["like_new", "good", "acceptable", "poor"]
