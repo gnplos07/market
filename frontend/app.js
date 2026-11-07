@@ -242,12 +242,10 @@ if (loginForm && registerForm && showRegisterButton && showLoginButton) {
     showRegisterButton.addEventListener("click", () => switchForm(true));
     showLoginButton.addEventListener("click", () => switchForm(false));
 }
-const estimateButton = document.getElementById("estimate-price-btn");
+    }
 
-if (estimateButton) {
-    estimateButton.addEventListener("click", estimateBookPrice);
-}
-
-
-    
-    }});
+    const estimateButton = document.getElementById("estimate-price-btn");
+    if (estimateButton) {
+        estimateButton.addEventListener("click", estimateBookPrice);
+    }
+});
